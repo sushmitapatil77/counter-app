@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import Counters from './component/counters';
+import Nav from './component/Nav';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  state = { 
+    counter:[
+     {id:1, value: 4},
+     {id:2, value: 3},
+     {id:3, value: 2},
+     {id:4, value: 6},
+     {id:5, value: 1},
+    ]
+    }
+
+    handleIncrement = (counter) =>{
+      const counters = [...this.state.counter];
+      const index = counters.indexOf(counter);
+      counters[index].value = counters[index].value+1;
+      this.setState({counters});
+     }
+   
+     handleDelete = (counterId) => {
+      const counter = this.state.counter.filter(count => counterId !== count.id);
+      this.setState({counter});
+      console.log("Handle Delete Clicked");
+     }
+   
+     handleReset= () =>{
+      const counters = this.state.counter.map(c => {
+       c.value=0;
+      return c;});
+      this.setState({counters});
+      console.log("Reset Button CLicked");
+     }
+
+  render() { 
+    return ( 
+      <React.Fragment>
+        <Nav counter={this.state.counter}/>
+        <Counters 
+        counter={this.state.counter}
+        onIncrement={this.handleIncrement}
+        onDelete={this.handleDelete}
+        onReset = {this.handleReset}
+        />
+      </React.Fragment>
+     );
+  }
 }
-
+ 
 export default App;
